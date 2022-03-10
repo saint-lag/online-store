@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getCategories } from '../services/api';
 import Product from './Product';
 import * as api from '../services/api';
 
@@ -9,20 +10,30 @@ class Home extends React.Component {
     this.state = {
       search: '',
       products: [],
+      categories: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderProduct = this.renderProduct.bind(this);
   }
 
-  handleChange({ target: { value } }) {
-    this.setState({ search: value });
+  componentDidMount() {
+    this.showCategories();
   }
 
   async handleClick() {
     const { search } = this.state;
     const products = await api.getProductsFromCategoryAndQuery(undefined, search);
     this.setState({ products });
+  }
+
+  handleChange({ target: { value } }) {
+    this.setState({ search: value });
+  }
+
+  showCategories = async () => {
+    const category = await getCategories();
+    this.setState({ categories: category });
   }
 
   renderProduct() {
@@ -35,7 +46,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { search } = this.state;
+    const { search, categories } = this.state;
     const { handleChange, handleClick, renderProduct } = this;
     return (
       <main>
@@ -58,6 +69,13 @@ class Home extends React.Component {
         <Link to="/shopping-cart" data-testid="shopping-cart-button">
           <button type="button">Carrinho</button>
         </Link>
+        <section>
+          {categories.map((elem) => (
+            <button type="submit" key={ elem.id } data-testid="category">
+              { elem.name }
+            </button>
+          ))}
+        </section>
         {renderProduct()}
       </main>
     );
