@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { getCategories } from '../services/api';
 
 class Categories extends React.Component {
@@ -11,11 +12,7 @@ class Categories extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({
-      categories: await getCategories()
-        .then((categories) => categories
-          .map((category) => category.name)),
-    });
+    this.setState({ categories: await getCategories() });
   }
 
   tagNamefyer(str) {
@@ -26,21 +23,24 @@ class Categories extends React.Component {
   createCategories() {
     const { categories } = this.state;
     const mainNavChildren = [];
-    categories.forEach((categoryName) => {
-      const tagName = this.tagNamefyer(categoryName);
+    const { onClick } = this.props;
+    categories.forEach((category) => {
+      const { name, id } = category;
+      const tagName = this.tagNamefyer(name);
       const categoryElBtn = React.createElement('button', {
         type: 'button',
-        id: `${tagName}-btn`,
+        id,
         key: `${tagName}-btn`,
+        onClick,
       });
       const categoryElLabel = React.createElement(
         'label',
         {
           key: `${tagName}-label`,
-          htmlFor: `${tagName}-btn`,
+          htmlFor: id,
           'data-testid': 'category',
         },
-        categoryName,
+        name,
       );
       const categoryElDiv = React.createElement(
         'div',
@@ -65,5 +65,9 @@ class Categories extends React.Component {
     return categories && createCategories();
   }
 }
+
+Categories.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};
 
 export default Categories;
