@@ -53,7 +53,7 @@ class Categories extends React.Component {
     });
     const mainNav = React.createElement(
       'nav',
-      { id: 'main-nav' },
+      { id: 'categories-nav' },
       mainNavChildren,
     );
     return mainNav;
