@@ -407,7 +407,7 @@ A tela básica da plataforma é a tela de **listagem de produtos**, onde quem us
 
   * Esta página deve ficar no path `/`, renderizável a partir do acesso ao componente `<App />`.
   * Mostre a mensagem `"Digite algum termo de pesquisa ou escolha uma categoria."`.
-  * Adicione o atributo `data-testid` com o valor `home-initial-message` no elemento da mensagem.
+  * Adicione o atributo `data-testid` com o valor `home-initial-message` no elemento da mensagem..
 
 O que será verificado:
 ```
