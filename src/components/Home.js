@@ -38,7 +38,7 @@ class Home extends React.Component {
   }
 
   render() {
-    const { search, categories } = this.state;
+    const { search } = this.state;
     const { handleChange, handleClick, renderProduct } = this;
     return (
       <main>
