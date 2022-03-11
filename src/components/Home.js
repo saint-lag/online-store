@@ -10,6 +10,7 @@ class Home extends React.Component {
     this.state = {
       search: '',
       products: [],
+      id: '',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -17,13 +18,15 @@ class Home extends React.Component {
   }
 
   async handleClick() {
-    const { search } = this.state;
-    const products = await api.getProductsFromCategoryAndQuery(undefined, search);
+    const { search, id } = this.state;
+    const products = await api.getProductsFromCategoryAndQuery(id, search);
     this.setState({ products });
   }
 
-  handleChange({ target: { value } }) {
-    this.setState({ search: value });
+  async handleChange({ target: { value, id } }) {
+    this.setState({ search: value, id });
+    const products = await api.getProductsFromCategoryAndQuery(id, '');
+    this.setState({ products });
   }
 
   renderProduct() {
@@ -60,7 +63,7 @@ class Home extends React.Component {
         <Link to="/shopping-cart" data-testid="shopping-cart-button">
           <button type="button">Carrinho</button>
         </Link>
-        <Categories />
+        <Categories onClick={ handleChange } />
         {renderProduct()}
       </main>
     );
