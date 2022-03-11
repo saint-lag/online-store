@@ -32,8 +32,14 @@ class Home extends React.Component {
   renderProduct() {
     const { products } = this.state;
     return (products.length !== 0)
-      ? (products.results.map(({ title, thumbnail, price }) => (
-        <Product key={ title } title={ title } image={ thumbnail } price={ price } />
+      ? (products.results.map(({ title, thumbnail, price, id }) => (
+        <Product
+          key={ title }
+          title={ title }
+          image={ thumbnail }
+          price={ price }
+          id={ id }
+        />
       )))
       : (<p>Nenhum produto foi encontrado</p>);
   }

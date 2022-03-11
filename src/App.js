@@ -1,15 +1,23 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import ShoppingCart from './components/ShoppingCart';
+import ProductDetails from './components/ProductDetails';
 
 class App extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Route path="/shopping-cart" component={ ShoppingCart } />
-        <Route path="/" component={ Home } />
+        <Switch>
+          <Route exact path="/shopping-cart" component={ ShoppingCart } />
+          <Route
+            exact
+            path="/product/:id"
+            render={ (props) => (<ProductDetails { ...props } />) }
+          />
+          <Route exact path="/" component={ Home } />
+        </Switch>
       </BrowserRouter>
     );
   }
