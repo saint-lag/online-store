@@ -12,7 +12,8 @@ class Home extends React.Component {
       products: [],
       id: '',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeBtn = this.handleChangeBtn.bind(this);
+    this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderProduct = this.renderProduct.bind(this);
   }
@@ -23,10 +24,14 @@ class Home extends React.Component {
     this.setState({ products });
   }
 
-  async handleChange({ target: { value, id } }) {
-    this.setState({ search: value, id });
-    const products = await api.getProductsFromCategoryAndQuery(id, '');
+  async handleChangeBtn({ target: { id } }) {
+    this.setState({ id });
+    const products = await api.getProductsFromCategoryAndQuery(id);
     this.setState({ products });
+  }
+
+  async handleChangeInput({ target: { value } }) {
+    this.setState({ search: value });
   }
 
   renderProduct() {
@@ -46,7 +51,7 @@ class Home extends React.Component {
 
   render() {
     const { search } = this.state;
-    const { handleChange, handleClick, renderProduct } = this;
+    const { handleChangeBtn, handleChangeInput, handleClick, renderProduct } = this;
     return (
       <main>
         <input type="text" />
@@ -57,7 +62,7 @@ class Home extends React.Component {
           type="text"
           data-testid="query-input"
           value={ search }
-          onChange={ handleChange }
+          onChange={ handleChangeInput }
         />
         <button
           type="button"
@@ -69,7 +74,7 @@ class Home extends React.Component {
         <Link to="/shopping-cart" data-testid="shopping-cart-button">
           <button type="button">Carrinho</button>
         </Link>
-        <Categories onClick={ handleChange } />
+        <Categories onClick={ handleChangeBtn } />
         {renderProduct()}
       </main>
     );
