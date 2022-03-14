@@ -29,12 +29,24 @@ class ProductDetails extends React.Component {
 
   render() {
     const { title, image, price } = this.state;
+    const { match } = this.props;
+    const { params } = match;
+    const { id } = params;
+    const { addCart } = this.props;
     return (
       <section className="product-details-section">
         <div>
           <h2 data-testid="product-detail-name">{title}</h2>
           <img src={ image } alt={ title } />
           <p>{price}</p>
+          <button
+            type="button"
+            data-testid="product-detail-add-to-cart"
+            name={ id }
+            onClick={ addCart }
+          >
+            Add
+          </button>
         </div>
         <Link to="/shopping-cart" data-testid="shopping-cart-button">
           <button type="button">Carrinho</button>
@@ -50,6 +62,7 @@ ProductDetails.propTypes = {
       id: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  addCart: PropTypes.func.isRequired,
 };
 
 export default ProductDetails;

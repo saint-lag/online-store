@@ -30,7 +30,7 @@ class Product extends React.Component {
 Product.propTypes = {
   title: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
-  price: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
   id: PropTypes.string.isRequired,
   addCart: PropTypes.func.isRequired,
 };

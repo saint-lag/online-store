@@ -41,7 +41,7 @@ class Home extends React.Component {
     return (products.length !== 0)
       ? (products.results.map(({ title, thumbnail, price, id }) => (
         <Product
-          key={ title }
+          key={ id }
           title={ title }
           image={ thumbnail }
           price={ price }
