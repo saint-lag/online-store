@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Product from './Product';
 import Categories from './Categories';
@@ -36,6 +37,7 @@ class Home extends React.Component {
 
   renderProduct() {
     const { products } = this.state;
+    const { addCart } = this.props;
     return (products.length !== 0)
       ? (products.results.map(({ title, thumbnail, price, id }) => (
         <Product
@@ -44,6 +46,7 @@ class Home extends React.Component {
           image={ thumbnail }
           price={ price }
           id={ id }
+          addCart={ addCart }
         />
       )))
       : (<p>Nenhum produto foi encontrado</p>);
@@ -80,5 +83,9 @@ class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+  addCart: PropTypes.func.isRequired,
+};
 
 export default Home;
