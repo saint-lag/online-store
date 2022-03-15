@@ -12,10 +12,15 @@ class App extends React.Component {
       cartProducts: [],
     };
     this.addCarts = this.addCarts.bind(this);
+    this.updateCart = this.updateCart.bind(this);
   }
 
   addCarts({ target: { name } }) {
     this.setState((prev) => ({ cartProducts: [...prev.cartProducts, name] }));
+  }
+
+  updateCart(update) {
+    this.setState({ cartProducts: update });
   }
 
   render() {
@@ -30,6 +35,7 @@ class App extends React.Component {
               (props) => (<ShoppingCart
                 { ...props }
                 cartProducts={ cartProducts }
+                updateCart={ this.updateCart }
               />)
             }
           />
