@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import Categories from './Categories';
 import Product from './Product';
+import Categories from './Categories';
 import * as api from '../services/api';
 
 class Home extends React.Component {
@@ -10,34 +11,50 @@ class Home extends React.Component {
     this.state = {
       search: '',
       products: [],
+      id: '',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeBtn = this.handleChangeBtn.bind(this);
+    this.handleChangeInput = this.handleChangeInput.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.renderProduct = this.renderProduct.bind(this);
   }
 
   async handleClick() {
-    const { search } = this.state;
-    const products = await api.getProductsFromCategoryAndQuery(undefined, search);
+    const { search, id } = this.state;
+    const products = await api.getProductsFromCategoryAndQuery(id, search);
     this.setState({ products });
   }
 
-  handleChange({ target: { value } }) {
+  async handleChangeBtn({ target: { id } }) {
+    this.setState({ id });
+    const products = await api.getProductsFromCategoryAndQuery(id);
+    this.setState({ products });
+  }
+
+  async handleChangeInput({ target: { value } }) {
     this.setState({ search: value });
   }
 
   renderProduct() {
     const { products } = this.state;
+    const { addCart } = this.props;
     return (products.length !== 0)
-      ? (products.results.map(({ title, thumbnail, price }) => (
-        <Product key={ title } title={ title } image={ thumbnail } price={ price } />
+      ? (products.results.map(({ title, thumbnail, price, id }) => (
+        <Product
+          key={ id }
+          title={ title }
+          image={ thumbnail }
+          price={ price }
+          id={ id }
+          addCart={ addCart }
+        />
       )))
       : (<p>Nenhum produto foi encontrado</p>);
   }
 
   render() {
     const { search } = this.state;
-    const { handleChange, handleClick, renderProduct } = this;
+    const { handleChangeBtn, handleChangeInput, handleClick, renderProduct } = this;
     return (
       <main>
         <input type="text" />
@@ -48,7 +65,7 @@ class Home extends React.Component {
           type="text"
           data-testid="query-input"
           value={ search }
-          onChange={ handleChange }
+          onChange={ handleChangeInput }
         />
         <button
           type="button"
@@ -60,11 +77,15 @@ class Home extends React.Component {
         <Link to="/shopping-cart" data-testid="shopping-cart-button">
           <button type="button">Carrinho</button>
         </Link>
-        <Categories />
+        <Categories onClick={ handleChangeBtn } />
         {renderProduct()}
       </main>
     );
   }
 }
+
+Home.propTypes = {
+  addCart: PropTypes.func.isRequired,
+};
 
 export default Home;
